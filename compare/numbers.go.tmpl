@@ -1,0 +1,24 @@
+package compare
+
+{{ range $item := $.items }}
+func {{ $item.name }}(a, b {{ $item.type }}) int {
+    switch {
+    case a < b:
+        return -1
+    case a > b:
+        return 1
+    default:
+        return 0
+    }
+}
+
+func {{ $item.name }}Ptr(order NilOrder) func(*{{ $item.type }}, *{{ $item.type }}) int {
+    return func(a, b *{{ $item.type }}) int {
+        v := order.compare(a, b)
+        if v != 0 {
+            return v
+        }
+        return {{ $item.name }}(*a, *b)
+    }
+}
+{{ end }}
