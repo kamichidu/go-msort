@@ -5,7 +5,9 @@ go:
   - 1.12.x
   - 1.11.x
 
-before_install:
+before_script:
+  - go get -v github.com/golang/dep/cmd/dep
+  - dep ensure -v -vendor-only
   - wget -O - -q https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.15.0
 
 script:
