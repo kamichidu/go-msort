@@ -1,7 +1,7 @@
 package compare
 
 type NilOrder interface {
-	compare(interface{}, interface{}) int
+	compare(bool, bool) int
 }
 
 var (
@@ -11,29 +11,31 @@ var (
 
 type nilFirst struct{}
 
-func (*nilFirst) compare(a, b interface{}) int {
+func (*nilFirst) compare(aIsNil, bIsNil bool) int {
 	switch {
-	case a != nil && b != nil:
-		return 0
-	case a == nil:
+	case !aIsNil && bIsNil:
+		return 1
+	case aIsNil && !bIsNil:
 		return -1
 	default:
-		return 1
+		return 0
 	}
 }
 
 type nilLast struct{}
 
-func (*nilLast) compare(a, b interface{}) int {
+func (*nilLast) compare(aIsNil, bIsNil bool) int {
 	switch {
-	case a != nil && b != nil:
-		return 0
-	case a == nil:
+	case !aIsNil && bIsNil:
+		return -1
+	case aIsNil && !bIsNil:
 		return 1
 	default:
-		return -1
+		return 0
 	}
 }
 
 //go:generate gobst -o ./numbers.go -var-file ./numbers.json ./numbers.go.tmpl
 //go:generate gofmt -w ./numbers.go
+//go:generate gobst -o ./numbers_test.go -var-file ./numbers.json ./numbers_test.go.tmpl
+//go:generate gofmt -w ./numbers_test.go

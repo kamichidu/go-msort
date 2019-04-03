@@ -17,9 +17,11 @@ func Time(a, b time.Time) int {
 
 func TimePtr(order NilOrder) func(*time.Time, *time.Time) int {
 	return func(a, b *time.Time) int {
-		v := order.compare(a, b)
+		v := order.compare(a == nil, b == nil)
 		if v != 0 {
 			return v
+		} else if a == nil && b == nil {
+			return 0
 		}
 		return Time(*a, *b)
 	}
