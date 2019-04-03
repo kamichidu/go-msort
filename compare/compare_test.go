@@ -11,8 +11,8 @@ func TestNilOrder(t *testing.T) {
 	var n *int
 	e := &i
 
-	assert.Equal(t, 0, NilFirst.compare(n, n))
-	assert.Equal(t, 0, NilLast.compare(n, n))
+	assert.Equal(t, -1, NilFirst.compare(n, n))
+	assert.Equal(t, 1, NilLast.compare(n, n))
 
 	assert.Equal(t, 0, NilFirst.compare(e, e))
 	assert.Equal(t, 0, NilLast.compare(e, e))
