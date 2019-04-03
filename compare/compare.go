@@ -1,5 +1,7 @@
 package compare
 
+import "reflect"
+
 type NilOrder interface {
 	compare(interface{}, interface{}) int
 }
@@ -12,10 +14,12 @@ var (
 type nilFirst struct{}
 
 func (*nilFirst) compare(a, b interface{}) int {
+	arv := reflect.ValueOf(a)
+	brv := reflect.ValueOf(b)
 	switch {
-	case a != nil && b != nil:
+	case !arv.IsNil() && !brv.IsNil():
 		return 0
-	case a == nil:
+	case arv.IsNil():
 		return -1
 	default:
 		return 1
@@ -25,10 +29,12 @@ func (*nilFirst) compare(a, b interface{}) int {
 type nilLast struct{}
 
 func (*nilLast) compare(a, b interface{}) int {
+	arv := reflect.ValueOf(a)
+	brv := reflect.ValueOf(b)
 	switch {
-	case a != nil && b != nil:
+	case !arv.IsNil() && !brv.IsNil():
 		return 0
-	case a == nil:
+	case arv.IsNil():
 		return 1
 	default:
 		return -1
